@@ -11,22 +11,35 @@ desktop-lab/
 ├── README.md              # 本文件：仓库说明
 ├── docs/
 │   ├── learning-roadmap.md   # 学习路线（阶段拆解）
-│   └── electron-vs-tauri.md  # Electron vs Tauri 核心差异对比
+│   ├── electron-vs-tauri.md  # Electron vs Tauri 核心差异对比
+│   ├── skill-check.md        # 能力自测清单（含「考题⇄练习」绑定约定）
+│   └── TODO.md               # 待办（Rust 工具链安装）
 ├── electron-lab/          # Electron 学习项目（TS）
-│   ├── src/main/          # 主进程（main process）
-│   ├── src/preload/       # 预加载脚本（preload）
-│   └── src/renderer/      # 渲染进程（renderer）
+│   ├── src/               # 基础示例：主进程 / preload / 渲染进程
+│   └── lessons/           # 主题课：每个主题 = demo + notes.md
+│       └── 01-process-lifecycle/
 └── tauri-lab/             # Tauri 学习项目（前端 + Rust）
     ├── src/               # 前端（WebView 侧）
     └── src-tauri/         # Rust 后端（Tauri 侧）
 ```
 
+## 主题课（lessons）约定
+
+每个主题一个目录，绑定三件套：**可运行 demo + `notes.md`（面试题/参考表述/坑）+ 一个 commit**。
+
+```bash
+cd electron-lab
+npm run lesson:01   # 进程模型与生命周期：看终端 [lifecycle]/[crash] 日志 + 操作窗口
+```
+
+笔记与代码一一对应：`notes.md` 里每道面试题都标注了 demo 里的代码位置。
+
 ## 当前状态
 
 | 项目 | 语言栈 | 状态 |
 | --- | --- | --- |
-| `electron-lab` | TypeScript / Node | 骨架已就绪，可运行 |
-| `tauri-lab` | TS 前端 + Rust 后端 | 骨架已就绪，待安装 Rust 工具链后运行 |
+| `electron-lab` | TypeScript / Node | 基础示例可运行；主题课 lessons/01（进程模型与生命周期）已完成 |
+| `tauri-lab` | TS 前端 + Rust 后端 | 骨架已就绪，待安装 Rust 工具链后运行（见 docs/TODO.md） |
 
 ## 快速开始
 
@@ -57,4 +70,4 @@ npm run tauri dev   # 首次构建需编译 Rust 依赖，较慢
 ## Git 约定
 
 - 默认分支：`main`
-- 提交后推送前需先征得同意（个人约定，不自动 push）
+- 不自动 commit、不自动 push；只有明确指示「提交并推送」时才执行 git 操作

@@ -8,15 +8,26 @@
 
 | # | 主题 | 自评分 | 面试常见追问 |
 | --- | --- | --- | --- |
-| 1 | 进程模型 | | 主进程/渲染进程怎么分工？为什么 Electron 要多进程？渲染进程崩溃怎么处理？ |
-| 2 | 生命周期 | | ready / window-all-closed / activate / will-quit 各在什么时机触发？macOS 与 Windows 的差异？ |
-| 3 | IPC | | 主进程 ⇄ 渲染进程有哪几种通信方式？各自适用场景？大量数据怎么传？ |
-| 4 | preload 与 contextBridge | | preload 存在的意义？为什么不直接在渲染进程开 Node？暴露 API 的正确姿势？ |
-| 5 | 安全模型 | | contextIsolation / sandbox / CSP 分别防什么？remote 模块为什么被移除？nodeIntegration 为什么不能开？ |
-| 6 | 窗口管理 | | 无边框窗口怎么拖拽？多窗口怎么通信？父子窗口是什么？ |
-| 7 | 打包分发 | | asar 是什么？electron-builder / forge 区别？macOS 公证、Windows 签名的流程？自动更新怎么做？ |
-| 8 | 性能优化 | | 为什么 Electron 内存高？启动怎么优化？什么场景用 webPreferences 会影响性能？ |
-| 9 | 与 Web 开发的区别 | | 渲染进程为什么没有跨域问题？file:// 协议有什么限制？为什么不能直接 import ES module？ |
+| 1 | 进程模型 | 1 | 主进程/渲染进程怎么分工？为什么 Electron 要多进程？渲染进程崩溃怎么处理？ |
+| 2 | 生命周期 | 1 | ready / window-all-closed / activate / will-quit 各在什么时机触发？macOS 与 Windows 的差异？ |
+| 3 | IPC | 2 | 主进程 ⇄ 渲染进程有哪几种通信方式？各自适用场景？大量数据怎么传？ |
+| 4 | preload 与 contextBridge | 待测 | preload 存在的意义？为什么不直接在渲染进程开 Node？暴露 API 的正确姿势？ |
+| 5 | 安全模型 | 待测 | contextIsolation / sandbox / CSP 分别防什么？remote 模块为什么被移除？nodeIntegration 为什么不能开？ |
+| 6 | 窗口管理 | 待测 | 无边框窗口怎么拖拽？多窗口怎么通信？父子窗口是什么？ |
+| 7 | 打包分发 | 待测 | asar 是什么？electron-builder / forge 区别？macOS 公证、Windows 签名的流程？自动更新怎么做？ |
+| 8 | 性能优化 | 待测 | 为什么 Electron 内存高？启动怎么优化？什么场景用 webPreferences 会影响性能？ |
+| 9 | 与 Web 开发的区别 | 待测 | 渲染进程为什么没有跨域问题？file:// 协议有什么限制？为什么不能直接 import ES module？ |
+
+> 评分记录：2026-09-29 口述自测，1=1 分、2=1 分、3=2 分。待续（4-9 题分批补测）。
+
+## 学习约定：考题 ⇄ 练习绑定
+
+每个主题在 `electron-lab/lessons/<n>-<主题>/` 下沉淀三件套：
+1. **可运行 demo**（src/ + 根目录 `npm run lesson:0X` 启动）
+2. **notes.md**（一句话结论 / 为什么 / 怎么做 / 坑在哪 / 面试题与参考表述 / 对应 demo 位置）
+3. **一个 commit**
+
+要求：面试题与参考表述必须能在 demo 里找到对应代码位置，杜绝「笔记是笔记、代码是代码」。
 
 ## 打分后
 

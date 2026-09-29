@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "npm run build && electron .",
-    "start": "electron ."
+    "start": "electron .",
+    "lesson:01": "tsc -p lessons/01-process-lifecycle && cp -R lessons/01-process-lifecycle/src/renderer lessons/01-process-lifecycle/dist/ && electron lessons/01-process-lifecycle/dist/main.js"
   },
   "devDependencies": {
     "@types/node": "^22",

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'" />
+    <title>lesson-01 进程模型与生命周期</title>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 2rem; background: #f6f8fa; color: #24292f; }
+      h1 { font-size: 1.4rem; }
+      .card { background: #fff; border: 1px solid #d0d7de; border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+      .tag { display: inline-block; background: #ddf4ff; color: #0969da; border-radius: 4px; padding: 2px 8px; font-size: 0.85rem; margin-right: 6px; }
+      button { padding: 6px 14px; border-radius: 6px; border: none; cursor: pointer; margin-right: 8px; }
+      .primary { background: #1f883d; color: #fff; }
+      .danger { background: #cf222e; color: #fff; }
+      code { background: #eaeef2; padding: 2px 6px; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <h1>Lesson 01 · 进程模型与生命周期</h1>
+
+    <div class="card">
+      <h3>本窗口的进程信息</h3>
+      <p>
+        进程类型 <code id="proc-type">-</code> ·
+        PID <code id="proc-pid">-</code> ·
+        Electron <code id="ver-electron">-</code> ·
+        Chromium <code id="ver-chrome">-</code> ·
+        Node <code id="ver-node">-</code>
+      </p>
+      <p style="font-size: 0.9rem; color: #57606a">
+        渲染进程跑在浏览器环境里：没有 require、没有 Node，只通过 window.desktop 的白名单方法与主进程对话。
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>动手演示</h3>
+      <button id="btn-open" class="primary">打开新窗口（新渲染进程）</button>
+      <button id="btn-crash" class="danger">模拟本窗口崩溃</button>
+      <p style="font-size: 0.9rem; color: #57606a">
+        崩溃后主进程监听到 <code>render-process-gone</code> 会自动重建页面，请看终端里的 <code>[crash]</code> 与 <code>[lifecycle]</code> 日志。
+      </p>
+    </div>
+
+    <div class="card" style="font-size: 0.85rem; color: #57606a">
+      终端日志对应关系：<span class="tag">ready</span>启动就绪
+      <span class="tag">window-all-closed</span>全部窗口关闭
+      <span class="tag">activate</span>macOS 激活
+      <span class="tag">will-quit</span>即将退出
+    </div>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>
