@@ -1,7 +1,7 @@
 /**
  * Lesson 01 · 进程模型与生命周期
  *
- * 面试题（本 demo 对应验证）：
+ * 自查题（本 demo 对应验证）：
  *  Q1 主进程/渲染进程怎么分工？为什么 Electron 要多进程？
  *  Q2 ready / window-all-closed / activate / will-quit 各在什么时机触发？
  *  Q3 渲染进程崩溃了怎么处理？

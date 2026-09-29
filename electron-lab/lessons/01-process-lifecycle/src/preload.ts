@@ -1,7 +1,7 @@
 /**
  * Lesson 01 · preload —— 安全边界的白名单
  *
- * 面试题：为什么不直接在渲染进程开 Node？preload 存在的意义？
+ * 自查题：为什么不直接在渲染进程开 Node？preload 存在的意义？
  * 答案：渲染进程暴露面越少越安全。preload 运行在隔离的上下文里，
  *       用 contextBridge 只把「白名单方法」挂到 window 上，其余一律不暴露。
  */

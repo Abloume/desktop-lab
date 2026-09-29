@@ -1,6 +1,6 @@
 # Lesson 01 · 进程模型与生命周期
 
-> 面试表述速记。所有结论都能在 `src/main.ts` 里找到对应代码。
+> 自查表述速记。所有结论都能在 `src/main.ts` 里找到对应代码。
 
 ## 一句话结论
 
@@ -57,7 +57,7 @@
 - 恢复方式：重新 `loadURL` / `reload`（Electron 会拉起新渲染进程）；更稳的做法是先检查 `webContents.isCrashed()` 再决定
 - **主进程崩溃 = 应用整体退出**（没有"重建主进程"一说，所以主进程代码要尽量简单可靠）
 
-## 面试题 + 参考表述（demo 对应位置）
+## 自查题 + 参考表述（demo 对应位置）
 
 **Q1：主进程/渲染进程怎么分工？为什么多进程？** → `main.ts` 开头 + `createWindow`
 > "主进程是 Node 环境，负责窗口生命周期和系统 API；渲染进程是 Chromium，负责页面。一个应用只有一个主进程、多个渲染进程。多进程有三个动机：一是隔离，单个页面崩溃不影响其他窗口；二是安全，渲染进程权限最小化、可以沙箱，页面被攻破也拿不到系统能力；三是稳定，主进程职责最小，是最后防线。这个模型和浏览器一致。"
@@ -71,7 +71,21 @@
 **追问：为什么崩溃后还要判断 `!win.isDestroyed()`？** → `main.ts` 对应注释
 > "崩溃 ≠ 销毁。崩溃的是页面进程，窗口（BrowserWindow 壳）可能还活着；reload() 作用在窗口上，前提是窗口还在。回调是异步的，窗口可能在这期间被关闭，所以要先确认窗口存活。类比前端操作 DOM 前的 el.isConnected 检查。"
 
-## 坑清单（面试埋雷点）
+## 崩溃排查四步法
+
+| 步骤 | 手段 | 结论 |
+| --- | --- | --- |
+| ① 事件拿现场 | `render-process-gone` 的 `details.reason` + `child-process-gone`（覆盖所有子进程） | 判断崩溃类型：oom/killed 查内存，crashed 查 native 层 |
+| ② 日志看过程 | `--enable-logging`、监听 `console-message` | 拿到崩溃前最后一条 JS 错误 |
+| ③ 崩溃转储看死因 | `crashReporter.start()` + minidump + `minidump_stackwalk` | 定位到原生栈具体函数 |
+| ④ 排除法复现 | `--disable-gpu` 测 GPU、二分注释代码 | 缩小到具体模块/操作 |
+
+reason 值速查：`clean-exit` 正常退出（非崩溃）；`abnormal-exit` 非零退出码；`killed` 被系统/主进程杀（查内存 OOM killer）；`crashed` 信号崩溃（查 native 层）；`oom` Chromium 内存耗尽；`launch-failed` 启动失败；`integrity-failure` 完整性校验失败。
+
+自查表述：
+> "崩溃排查四步：先看 reason 分类型——oom/killed 查内存、crashed 查 native 层，配合 child-process-gone 确认是不是 GPU 进程；再开 --enable-logging 并转发渲染进程 console，拿崩溃前最后一条错误；然后 crashReporter 收集 minidump，用 stackwalk 定位原生栈；最后稳定复现后用二分法缩小范围。生产环境把崩溃上报接 Sentry 聚合。"
+
+## 坑清单（自查易错点）
 
 - ❌ 在 `ready` 之前调用 `BrowserWindow` 相关 API（部分可用但行为不可靠，标准姿势是 `whenReady().then`）
 - ❌ 把 `activate` 理解成「窗口激活」——它是 **app 级**、macOS 专属事件，窗口焦点是 `browser-window-focus`
