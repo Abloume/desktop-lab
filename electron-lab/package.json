@@ -1,0 +1,17 @@
+{
+  "name": "electron-lab",
+  "version": "0.1.0",
+  "description": "Electron 学习项目（TypeScript）",
+  "private": true,
+  "main": "dist/main/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "npm run build && electron .",
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "electron": "^37",
+    "typescript": "^5"
+  }
+}

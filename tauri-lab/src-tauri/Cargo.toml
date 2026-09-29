@@ -1,0 +1,18 @@
+[package]
+name = "tauri-lab"
+version = "0.1.0"
+description = "Tauri learning project"
+edition = "2021"
+
+# lib 名称与 main.rs 中的引用保持一致（Rust 的 crate 名用下划线，不能用连字符）
+[lib]
+name = "tauri_lab_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      CSP（内容安全策略）：禁止加载远程脚本/资源，只允许本地。
+      渲染进程即使被注入恶意内容，也无法外联或执行远程代码。
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
+    />
+    <title>electron-lab</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background: #f6f8fa;
+        color: #24292f;
+      }
+      h1 { font-size: 1.5rem; }
+      code { background: #eaeef2; padding: 2px 6px; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <h1>electron-lab 👋</h1>
+    <p id="info">加载中…</p>
+    <p>
+      Electron <code id="ver-electron">-</code> ·
+      Chromium <code id="ver-chrome">-</code> ·
+      Node <code id="ver-node">-</code> ·
+      平台 <code id="ver-platform">-</code>
+    </p>
+    <!-- 渲染进程脚本：普通 script 即可（file:// 下不支持 ES module） -->
+    <script src="./renderer.js"></script>
+  </body>
+</html>
