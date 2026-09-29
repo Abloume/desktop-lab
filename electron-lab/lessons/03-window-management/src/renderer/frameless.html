@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'" />
+    <title>无边框窗口</title>
+    <style>
+      /* 无边框窗口没有系统标题栏，整个应用顶部由我们自己画 */
+      html, body { margin: 0; height: 100%; }
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #e6edf3; background: #1b1f24; }
+
+      /* Q6 核心：自定义标题栏 */
+      .titlebar {
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+        background: #21262d;
+        user-select: none;
+        -webkit-app-region: drag;   /* 整条标题栏可拖拽窗口 */
+      }
+      /* 按钮必须是 no-drag，否则拖拽区域会吞掉点击事件 */
+      .titlebar button {
+        -webkit-app-region: no-drag;
+        background: #30363d;
+        border: none;
+        color: #e6edf3;
+        border-radius: 6px;
+        padding: 4px 10px;
+        cursor: pointer;
+      }
+      .titlebar .close { background: #da3633; }
+      .content { padding: 1rem 1.25rem; font-size: 0.9rem; }
+      code { background: #30363d; padding: 1px 5px; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <div class="titlebar">
+      <span>无边框窗口 · 按住此处拖拽</span>
+      <span>
+        <button id="btn-min">—</button>
+        <button id="btn-close" class="close">✕</button>
+      </span>
+    </div>
+    <div class="content">
+      <p>
+        这个窗口用 <code>frame: false</code> 创建，没有系统标题栏和边框。
+        顶部 44px 的 <code>.titlebar</code> 用 <code>-webkit-app-region: drag</code> 实现拖拽，
+        按钮区域用了 <code>no-drag</code> 保证可点击。
+      </p>
+      <p>最小化/关闭按钮由 preload 调用主进程的 <code>win-minimize / win-close</code> 实现。</p>
+    </div>
+    <script src="./frameless.js"></script>
+  </body>
+</html>

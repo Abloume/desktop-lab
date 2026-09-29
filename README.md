@@ -17,7 +17,9 @@ desktop-lab/
 ├── electron-lab/          # Electron 学习项目（TS）
 │   ├── src/               # 基础示例：主进程 / preload / 渲染进程
 │   └── lessons/           # 主题课：每个主题 = demo + notes.md
-│       └── 01-process-lifecycle/
+│       ├── 01-process-lifecycle/
+│       ├── 02-ipc-security/
+│       └── 03-window-management/
 └── tauri-lab/             # Tauri 学习项目（前端 + Rust）
     ├── src/               # 前端（WebView 侧）
     └── src-tauri/         # Rust 后端（Tauri 侧）
@@ -30,6 +32,8 @@ desktop-lab/
 ```bash
 cd electron-lab
 npm run lesson:01   # 进程模型与生命周期：看终端 [lifecycle]/[crash] 日志 + 操作窗口
+npm run lesson:02   # IPC 与安全模型：三种 IPC 方式 + 安全边界自检 + MessagePort 直连
+npm run lesson:03   # 窗口管理：无边框拖拽 + 父子/模态窗口 + 多窗口转发
 ```
 
 笔记与代码一一对应：`notes.md` 里每道自查题都标注了 demo 里的代码位置。
@@ -38,7 +42,7 @@ npm run lesson:01   # 进程模型与生命周期：看终端 [lifecycle]/[crash
 
 | 项目 | 语言栈 | 状态 |
 | --- | --- | --- |
-| `electron-lab` | TypeScript / Node | 基础示例可运行；主题课 lessons/01（进程模型与生命周期）已完成 |
+| `electron-lab` | TypeScript / Node | 基础示例可运行；主题课 lessons/01 进程模型、02 IPC 与安全、03 窗口管理 已完成 |
 | `tauri-lab` | TS 前端 + Rust 后端 | 骨架已就绪，待安装 Rust 工具链后运行（见 docs/TODO.md） |
 
 ## 快速开始

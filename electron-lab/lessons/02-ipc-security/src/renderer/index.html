@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <!--
+      Q5：CSP（内容安全策略）—— 限制页面能加载/执行哪些来源的资源。
+      这里只允许自身来源，禁止任何内联/远程脚本，防 XSS 注入。
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'" />
+    <title>lesson-02 IPC 与安全模型</title>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 1.5rem 2rem; background: #f6f8fa; color: #24292f; }
+      h1 { font-size: 1.4rem; margin-top: 0; }
+      h3 { margin: 0 0 0.5rem; font-size: 1rem; }
+      .card { background: #fff; border: 1px solid #d0d7de; border-radius: 8px; padding: 0.9rem 1.1rem; margin-bottom: 0.9rem; }
+      .row { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+      input { flex: 1; padding: 5px 8px; border: 1px solid #d0d7de; border-radius: 6px; }
+      button { padding: 5px 12px; border-radius: 6px; border: none; cursor: pointer; }
+      .primary { background: #1f883d; color: #fff; }
+      .secondary { background: #eaeef2; color: #24292f; }
+      .danger { background: #cf222e; color: #fff; }
+      code { background: #eaeef2; padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
+      .output { background: #0d1117; color: #7ee787; border-radius: 6px; padding: 8px 10px; font-size: 0.85rem; min-height: 1.2em; white-space: pre-wrap; word-break: break-all; }
+      .muted { color: #57606a; font-size: 0.85rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Lesson 02 · IPC 与安全模型</h1>
+
+    <!-- ① 安全边界 -->
+    <div class="card">
+      <h3>① 安全边界自检（Q5）</h3>
+      <p class="muted">
+        <code>typeof require</code> = <code id="req">-</code> ·
+        <code>typeof process</code> = <code id="proc">-</code> ·
+        <code>window.desktop</code> 暴露的方法 = <code id="api-list">-</code>
+      </p>
+      <p class="muted">nodeIntegration 关闭 + contextIsolation 开启：页面没有 Node，只能通过 window.desktop 白名单与主进程对话。</p>
+    </div>
+
+    <!-- ② invoke 请求-响应 -->
+    <div class="card">
+      <h3>② invoke：请求-响应（最常用）</h3>
+      <div class="row">
+        <input id="invoke-input" placeholder="输入一段文字，交给主进程处理（空输入会触发参数校验）" />
+        <button id="btn-echo" class="primary">调用 echo</button>
+      </div>
+      <div class="output" id="echo-output">点击按钮，看 invoke 的返回（含主进程参数校验演示）</div>
+    </div>
+
+    <!-- ③ send 单向 + 主进程推送 -->
+    <div class="card">
+      <h3>③ send 单向 + 主进程主动推送</h3>
+      <div class="row">
+        <button id="btn-ping" class="secondary">发单向消息 ping（看终端日志）</button>
+        <button id="btn-tick" class="secondary">启动/停止时间推送</button>
+      </div>
+      <div class="output" id="tick-output">主进程每秒推送一次时间戳到这里（留意停止后推送即断，定时器已清理）</div>
+    </div>
+
+    <!-- ④ MessagePort 直连 -->
+    <div class="card">
+      <h3>④ MessagePort：渲染进程间直连（不经主进程转发）</h3>
+      <div class="row">
+        <button id="btn-peer" class="primary">建立对等连接（打开窗口 B）</button>
+      </div>
+      <div class="row">
+        <input id="peer-input" placeholder="输入消息，直接发给窗口 B（A ⇄ B 直连）" />
+        <button id="btn-send-peer" class="secondary">发送</button>
+      </div>
+      <div class="output" id="peer-output">等待建立连接…</div>
+    </div>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>
