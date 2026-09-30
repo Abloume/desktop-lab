@@ -10,7 +10,9 @@
     "start": "electron .",
     "lesson:01": "tsc -p lessons/01-process-lifecycle && cp -R lessons/01-process-lifecycle/src/renderer lessons/01-process-lifecycle/dist/ && electron lessons/01-process-lifecycle/dist/main.js",
     "lesson:02": "tsc -p lessons/02-ipc-security && cp -R lessons/02-ipc-security/src/renderer lessons/02-ipc-security/dist/ && electron lessons/02-ipc-security/dist/main.js",
-    "lesson:03": "tsc -p lessons/03-window-management && cp -R lessons/03-window-management/src/renderer lessons/03-window-management/dist/ && electron lessons/03-window-management/dist/main.js"
+    "lesson:03": "tsc -p lessons/03-window-management && cp -R lessons/03-window-management/src/renderer lessons/03-window-management/dist/ && electron lessons/03-window-management/dist/main.js",
+    "lesson:04": "tsc -p lessons/04-packaging-update && cp -R lessons/04-packaging-update/src/renderer lessons/04-packaging-update/dist/ && electron lessons/04-packaging-update/dist/main.js",
+    "lesson:05": "tsc -p lessons/05-performance-web && cp -R lessons/05-performance-web/src/renderer lessons/05-performance-web/dist/ && electron lessons/05-performance-web/dist/main.js"
   },
   "devDependencies": {
     "@types/node": "^22",

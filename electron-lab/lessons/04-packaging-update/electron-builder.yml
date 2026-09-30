@@ -1,0 +1,39 @@
+# electron-builder 配置示例（Lesson 04 学习资产）
+# 使用前：npm i -D electron-builder，并在 package.json 加脚本 "pack": "electron-builder"
+# 打包命令：npm run pack（产物输出到 release/）
+
+appId: com.example.electron-lab
+productName: electron-lab
+directories:
+  output: release
+files:
+  - dist/**/*
+  - package.json
+
+# macOS：Developer ID 签名 + 公证
+# 公证需要 Apple 账号凭证（配置为环境变量 APPLE_ID / APPLE_APP_SPECIFIC_PASSWORD / APPLE_TEAM_ID）
+mac:
+  target:
+    - dmg
+    - zip
+  identity: "Developer ID Application: Your Name (TEAMID)"
+  hardenedRuntime: true
+  entitlements: build/entitlements.mac.plist
+  notarize: true
+
+# Windows：代码签名证书（EV/OV），pfx + 密码
+win:
+  target:
+    - nsis
+  certificateFile: cert.pfx
+
+# Linux
+linux:
+  target:
+    - AppImage
+    - deb
+
+# 自动更新（配合 electron-updater）
+publish:
+  provider: generic
+  url: https://example.com/releases/

@@ -19,7 +19,9 @@ desktop-lab/
 │   └── lessons/           # 主题课：每个主题 = demo + notes.md
 │       ├── 01-process-lifecycle/
 │       ├── 02-ipc-security/
-│       └── 03-window-management/
+│       ├── 03-window-management/
+│       ├── 04-packaging-update/
+│       └── 05-performance-web/
 └── tauri-lab/             # Tauri 学习项目（前端 + Rust）
     ├── src/               # 前端（WebView 侧）
     └── src-tauri/         # Rust 后端（Tauri 侧）
@@ -34,6 +36,8 @@ cd electron-lab
 npm run lesson:01   # 进程模型与生命周期：看终端 [lifecycle]/[crash] 日志 + 操作窗口
 npm run lesson:02   # IPC 与安全模型：三种 IPC 方式 + 安全边界自检 + MessagePort 直连
 npm run lesson:03   # 窗口管理：无边框拖拽 + 父子/模态窗口 + 多窗口转发
+npm run lesson:04   # 打包分发：环境差异 + asar 读取 + 签名公证/自动更新知识卡
+npm run lesson:05   # 性能与 Web 差异：进程内存实测 + file:// 能力实验台
 ```
 
 笔记与代码一一对应：`notes.md` 里每道自查题都标注了 demo 里的代码位置。
@@ -42,7 +46,7 @@ npm run lesson:03   # 窗口管理：无边框拖拽 + 父子/模态窗口 + 多
 
 | 项目 | 语言栈 | 状态 |
 | --- | --- | --- |
-| `electron-lab` | TypeScript / Node | 基础示例可运行；主题课 lessons/01 进程模型、02 IPC 与安全、03 窗口管理 已完成 |
+| `electron-lab` | TypeScript / Node | 基础示例可运行；主题课 lessons/01-05 全部完成（进程/IPC与安全/窗口/打包/性能） |
 | `tauri-lab` | TS 前端 + Rust 后端 | 骨架已就绪，待安装 Rust 工具链后运行（见 docs/TODO.md） |
 
 ## 快速开始

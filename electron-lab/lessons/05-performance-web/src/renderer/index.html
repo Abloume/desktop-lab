@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'" />
+    <title>lesson-05 性能优化与 Web 差异</title>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 1.5rem 2rem; background: #f6f8fa; color: #24292f; }
+      h1 { font-size: 1.4rem; margin-top: 0; }
+      h3 { margin: 0 0 0.5rem; font-size: 1rem; }
+      .card { background: #fff; border: 1px solid #d0d7de; border-radius: 8px; padding: 0.9rem 1.1rem; margin-bottom: 0.9rem; }
+      .row { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+      button { padding: 5px 12px; border-radius: 6px; border: none; cursor: pointer; }
+      .primary { background: #1f883d; color: #fff; }
+      .secondary { background: #eaeef2; color: #24292f; }
+      code { background: #eaeef2; padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
+      .output { background: #0d1117; color: #7ee787; border-radius: 6px; padding: 8px 10px; font-size: 0.85rem; min-height: 1.2em; white-space: pre-wrap; }
+      .muted { color: #57606a; font-size: 0.85rem; }
+      table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+      th, td { border: 1px solid #d0d7de; padding: 5px 8px; text-align: left; }
+      th { background: #f0f3f6; }
+    </style>
+  </head>
+  <body>
+    <h1>Lesson 05 · 性能优化与 Web 差异</h1>
+
+    <!-- ① 内存构成实测 -->
+    <div class="card">
+      <h3>① 内存构成实测（Q8）</h3>
+      <div class="row">
+        <button id="btn-metrics" class="primary">刷新进程内存</button>
+        <button id="btn-open-second" class="secondary">再开一个窗口（观察内存叠加）</button>
+      </div>
+      <div class="output" id="metrics-output">点击刷新：看主进程 / 渲染进程 / GPU 进程各自占多少</div>
+      <p class="muted">
+        内存高的根因：每个窗口一个完整 Chromium 渲染进程 + Node 主进程 + GPU 进程，多窗口线性叠加。
+      </p>
+    </div>
+
+    <!-- ② file:// 能力实测 -->
+    <div class="card">
+      <h3>② file:// 能力实测（Q9）</h3>
+      <div class="row">
+        <button id="btn-fetch" class="secondary">fetch('file://…')</button>
+        <button id="btn-import" class="secondary">动态 import 模块</button>
+        <button id="btn-script" class="secondary">script 标签加载本地 js</button>
+        <button id="btn-storage" class="secondary">localStorage</button>
+      </div>
+      <div class="output" id="web-output">逐个实验，看 file:// 下哪些能用、哪些被拦</div>
+      <p class="muted">
+        <b>结论预告</b>：fetch(file://) ❌ 被拒 · import module ❌ CORS 拦截 · script 本地资源 ✅ · localStorage ✅。
+        这就是渲染层必须用打包器（vite/webpack）的原因。
+      </p>
+    </div>
+
+    <!-- ③ 启动优化清单 -->
+    <div class="card">
+      <h3>③ 启动优化清单（Q8，知识卡）</h3>
+      <table>
+        <tr><th>优化项</th><th>做法</th></tr>
+        <tr><td>先建后显</td><td><code>show: false</code> + <code>ready-to-show</code> 再 show（本窗口已用）</td></tr>
+        <tr><td>窗口懒加载</td><td>不启动建全部窗口，按需创建</td></tr>
+        <tr><td>主进程轻启动</td><td>启动阶段避免重 IO / 同步大任务</td></tr>
+        <tr><td>渲染层瘦身</td><td>bundle 瘦身、路由懒加载、首屏只渲染必要</td></tr>
+        <tr><td>后台节流</td><td>隐藏窗口 backgroundThrottling、定时器清理</td></tr>
+        <tr><td>单实例</td><td>requestSingleInstanceLock 防多开重复消耗</td></tr>
+      </table>
+    </div>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>

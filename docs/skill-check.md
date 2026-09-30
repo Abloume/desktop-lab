@@ -14,11 +14,11 @@
 | 4 | preload 与 contextBridge | 1 | preload 存在的意义？为什么不直接在渲染进程开 Node？暴露 API 的正确姿势？ |
 | 5 | 安全模型 | 1 | contextIsolation / sandbox / CSP 分别防什么？remote 模块为什么被移除？nodeIntegration 为什么不能开？ |
 | 6 | 窗口管理 | 0 | 无边框窗口怎么拖拽？多窗口怎么通信？父子窗口是什么？ |
-| 7 | 打包分发 | 待测 | asar 是什么？electron-builder / forge 区别？macOS 公证、Windows 签名的流程？自动更新怎么做？ |
-| 8 | 性能优化 | 待测 | 为什么 Electron 内存高？启动怎么优化？什么场景用 webPreferences 会影响性能？ |
-| 9 | 与 Web 开发的区别 | 待测 | 渲染进程为什么没有跨域问题？file:// 协议有什么限制？为什么不能直接 import ES module？ |
+| 7 | 打包分发 | 1 | asar 是什么？electron-builder / forge 区别？macOS 公证、Windows 签名的流程？自动更新怎么做？ |
+| 8 | 性能优化 | 1 | 为什么 Electron 内存高？启动怎么优化？什么场景用 webPreferences 会影响性能？ |
+| 9 | 与 Web 开发的区别 | 0 | 渲染进程为什么没有跨域问题？file:// 协议有什么限制？为什么不能直接 import ES module？ |
 
-> 评分记录：2026-09-29 口述自测，1=1 分、2=1 分、3=2 分；4=1 分、5=1 分、6=0 分。待续（7-9 题分批补测）。
+> 评分记录：2026-09-29 口述自测，1=1 分、2=1 分、3=2 分；4=1 分、5=1 分、6=0 分。2026-09-30 补测 7=1 分、8=1 分、9=0 分。九题自测完毕，全部 ≤2 分，进入重建队列。
 
 ## 学习约定：题目 ⇄ 练习绑定
 
