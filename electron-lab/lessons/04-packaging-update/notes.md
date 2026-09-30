@@ -66,6 +66,40 @@
 - **国内替代**：阿里云 OSS、腾讯云 COS、七牛云（同为对象存储，S3 在国内访问不稳定），通常配 `provider: generic` + 云存储公开 URL；
 - **generic = 任意静态服务器/内网地址**，最通用的发布源，私有分发首选。
 
+### 差分更新模拟器（可运行案例）
+
+`update-simulator/simulate.mjs` 用简化 blockmap 机制真实跑通差分更新全流程：
+
+```bash
+cd electron-lab/lessons/04-packaging-update/update-simulator
+node simulate.mjs normal            # ✅ 正常差分：16 块中 3 块变化，只下载 768/4096 字节
+node simulate.mjs missing-blockmap  # ❌ 漏传 blockmap → 差分失败 → 回退全量成功（更新不中断）
+node simulate.mjs mismatch-sha      # ❌ 版本串了（换包没更新 yml）→ 差分与全量校验均失败 → 中止（问题在服务器）
+```
+
+三个场景对应真实世界：
+- `normal`：小版本迭代，diff 率低，省流量；
+- `missing-blockmap`：上传只传了 exe 漏了 `.blockmap` → 用户侧降级全量，**更新仍成功**；
+- `mismatch-sha`：`latest.yml` 的 sha512 与安装包不符（版本串了）→ 校验失败，**更新中止且指向服务器数据问题**——运维要检查发布流水线。
+
+### blockmap 是谁生成的（发布三件套）
+
+**electron-builder 在打包时自动生成**，开发者不用手写。一次 `npm run pack` 产出三件套：
+
+| 文件 | 谁生成 | 作用 |
+| --- | --- | --- |
+| `app-x.x.x.exe` | electron-builder | 安装包本体 |
+| `app-x.x.x.exe.blockmap` | electron-builder（自动） | 差分索引（每块 sha256） |
+| `latest.yml` | electron-builder（自动） | 更新元数据（sha512/size/url） |
+
+发布时必须**三件一起上传**到发布源。漏文件的后果分级：
+
+- 漏 `latest.yml` → 客户端**连更新都发现不了**（最严重，不是慢的问题）；
+- 漏 `.blockmap` → 差分不可用，回退全量（只慢不挂）；
+- yml 与安装包不匹配 → 校验失败，更新中止（场景三）。
+
+关键细节：**electron-updater 对 blockmap 是尽力而为**——按 `<安装包名>.blockmap` 约定去找，找不到就静默降级全量，不报错中断。所以「漏传 blockmap」的根源几乎都是**发布流水线只传了安装包**。
+
 ## 自查题 + 参考表述（demo 对应位置）
 
 **Q7：asar / 构建工具 / 签名公证 / 自动更新？** → `main.ts` 各处 + `electron-builder.yml`
