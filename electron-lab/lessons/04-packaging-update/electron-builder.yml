@@ -34,6 +34,14 @@ linux:
     - deb
 
 # 自动更新（配合 electron-updater）
+# generic：任意静态服务器/内网地址，私有分发首选
 publish:
   provider: generic
   url: https://example.com/releases/
+
+# S3 变体（AWS 对象存储）：bucket = 桶（一级文件夹），region = 区域
+# publish:
+#   provider: s3
+#   bucket: my-app-releases
+#   region: ap-northeast-1
+# 国内同类型服务：阿里云 OSS / 腾讯云 COS / 七牛云，一般仍走 generic + 公开 URL
